@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Akun</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pendaftaran.css">
+</head>
+<body>
+  <div class="register-wrapper">
+    <div class="register-card">
+      <h2>Daftar Akun</h2>
+      <p>Silakan isi data di bawah ini</p>
+      <form id="registerForm">
+        <input type="text" id="nama" class="text-input" placeholder="Nama" required />
+        <input type="email" id="email" class="text-input" placeholder="Email" required />
+        <input type="text" id="username" class="text-input" placeholder="Username" required />
+        <input type="password" id="password" class="text-input" placeholder="Kata Sandi" required />
+        <input type="password" id="repassword" class="text-input" placeholder="Ulangi Kata Sandi" required />
+        <button type="submit" class="btn-primari">Daftar</button>
+        <div class="m2">
+            <p>Sudah Punya akun? <a href="#" id="btnLogin">Login</a></p>
+        </div>
+      </form>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script src="../js/pendaftaran.js"></script>
+</body>
+</html>

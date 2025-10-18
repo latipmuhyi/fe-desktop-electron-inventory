@@ -1,0 +1,40 @@
+body, html {
+        height: 100%;
+        margin: 0;
+      }
+      .login-container {
+        height: 100vh;
+        overflow: hidden;
+      }
+      .image-section {
+        background: linear-gradient(135deg, #d6925dff 0%, #937135ff 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .image-section img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px;
+      }
+      .form-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background-color: #f8f9fa;
+      }
+      .form-card {
+        width: 100%;
+        max-width: 350px;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .btn-group-custom {
+        display: flex;
+        gap: 10px;
+      }
+      .btn-group-custom .btn {
+        flex: 1;
+      }

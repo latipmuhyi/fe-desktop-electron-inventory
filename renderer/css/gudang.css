@@ -1,0 +1,35 @@
+input, button { 
+    margin: 5px; 
+    padding: 10px; 
+}
+    
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin: 20px 0 20px 0; 
+}
+    
+table, th, td { 
+    border: 1px solid #ddd; 
+}
+    
+th, td { 
+    padding: 8px; 
+    text-align: center; 
+}
+    
+td[contenteditable="true"] { 
+    background: #f9f9f9; cursor: text; 
+}
+
+th{
+    font-size: 13px;
+}
+    
+.delete-btn { 
+    cursor: pointer; color: red; 
+}
+    
+.hidden { 
+    display: none; 
+}

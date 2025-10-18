@@ -1,0 +1,123 @@
+body {
+        overflow-x: hidden;
+      }
+      
+      /* Sidebar */
+      .sidebar {
+        min-height: 100vh;
+        background: linear-gradient(180deg, #80602dff 0%, #5e5434ff 100%);
+        /* box-shadow: 2px 0 5px rgba(0,0,0,0.1); */
+      }
+      
+      .sidebar .nav-link {
+        color: #ecf0f1;
+        padding: 15px 20px;
+        margin: 5px 10px;
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+      
+      .sidebar .nav-link:hover {
+        background-color: rgba(255,255,255,0.1);
+        transform: translateX(5px);
+      }
+      
+      .sidebar .nav-link.active {
+        background-color: #dba934ff;
+        color: white;
+      }
+      
+      .sidebar .nav-link i {
+        width: 25px;
+        margin-right: 10px;
+      }
+      
+      .sidebar-brand {
+        padding: 20px;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      
+      /* Top Navbar */
+      .top-navbar {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      
+      /* Main Content */
+      .main-content {
+        padding: 20px;
+        background-color: #f8f9fa;
+        min-height: 100vh;
+      }
+      
+      /* Cards */
+      .stat-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      }
+      
+      .stat-card .card-body {
+        padding: 25px;
+      }
+      
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+      
+      .bg-primary-light {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+      }
+      
+      .bg-success-light {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+      }
+      
+      .bg-warning-light {
+        background-color: rgba(241, 196, 15, 0.1);
+        color: #f1c40f;
+      }
+      
+      .bg-danger-light {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+      }
+      
+      /* Table */
+      .table-custom {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          position: fixed;
+          left: -100%;
+          transition: left 0.3s;
+          z-index: 1000;
+        }
+        
+        .sidebar.show {
+          left: 0;
+        }
+      }

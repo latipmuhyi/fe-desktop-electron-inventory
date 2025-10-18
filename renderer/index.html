@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Form Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body>
+    <div class="container-fluid login-container">
+      <div class="row h-100">
+        <div class="col-md-6 image-section">
+          <div class="text-center text-white">
+            <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="150" cy="150" r="140" fill="white" opacity="0.2"/>
+              <circle cx="150" cy="150" r="110" fill="white" opacity="0.3"/>
+              <path d="M150 80C172.091 80 190 97.9086 190 120C190 142.091 172.091 160 150 160C127.909 160 110 142.091 110 120C110 97.9086 127.909 80 150 80Z" fill="white"/>
+              <path d="M150 170C185.899 170 215 181.193 215 195V220H85V195C85 181.193 114.101 170 150 170Z" fill="white"/>
+            </svg>
+            <h2 class="mt-4">Selamat Datang</h2>
+            <p>Silakan login untuk melanjutkan</p>
+          </div>
+        </div>
+        
+        <div class="col-md-6 form-section">
+          <div class="card form-card">
+            <div class="card-body p-4">
+              <h3 class="card-title text-center mb-4">Login</h3>
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="emailInput" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="emailInput" placeholder="xxx@gmail.com" required>
+                </div>
+                <div class="mb-3">
+                  <label for="passwordInput" class="form-label">Kata Sandi</label>
+                  <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan kata sandi" required>
+                </div>
+                <div class="btn-group-custom">
+                  <button type="submit" class="btn btn-ssi" id="btnLogin">Masuk</button>
+                </div>
+                <div class="btn-group-custom mt-2">
+                  <button type="button" class="btn btn-outline-danger" id="btnQuit">Keluar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ✅ Toast Sukses -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+      <div id="loginToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">Login berhasil! Selamat datang 👋</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <!-- ❌ Toast Error -->
+      <div id="errorToast" class="toast align-items-center text-bg-danger border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">Email atau kata sandi salah!</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="./js/route.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./js/loading.js"></script>
+  </body>
+</html>

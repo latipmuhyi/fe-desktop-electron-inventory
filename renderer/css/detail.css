@@ -1,0 +1,70 @@
+body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
+
+      /* Header atas */
+      .header-pos {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-pos h2 {
+        margin: 0;
+        font-weight: bold;
+      }
+
+      .header-pos h5, .header-pos label, .header-pos h6 {
+        margin: 0;
+      }
+
+      .border-d {
+        border-left: 2px solid #ffb520;
+        height: 50px;
+        margin: 0 15px;
+      }
+
+      
+
+      .panel-kanan {
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        height: 100%;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      }
+
+      .panel-kanan button {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      /* Bagian bawah total */
+      .footer-pos {
+        background-color: #fff;
+        padding: 15px 25px;
+        border-top: 2px solid #ccc;
+      }
+
+      .footer-pos .total {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #da9a6fff;
+      }
+
+      .btn-bayar {
+        background-color: #da9a6fff;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 10px 25px;
+        border-radius: 8px;
+      }
+
+      .btn-bayar:hover {
+        background-color: rgb(255, 174, 121);
+      }
