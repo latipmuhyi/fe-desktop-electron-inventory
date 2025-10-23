@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const pickingCode = localStorage.getItem("picking-code");
+  const warehouse = localStorage.getItem("warehouse");
   const tbodyLeft = document.getElementById("tbody-left");
   const tbodyRight = document.getElementById("tbody-right");
   const tbodyMoving = document.getElementById("tbody-moving");
@@ -12,7 +12,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
   const internalId = params.get("internal_id");
+  headWarehouse.textContent = internalId || "-";
+
   let transferId = "";
+  let barcodeList = [];
 
   if (!internalId) {
     console.error("Parameter internal_id tidak ditemukan!");
@@ -20,23 +23,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function renderTable() {
-    let url = `${base_url}/api/internal-transfer/detail?transfer_id=${internalId}`;
+    let url = `${base_url}/api/stock-product-available?warehouse=${warehouse}`;
+    let urlScanned = `${base_url}/api/internal-transfer/detail?transfer_id=${internalId}`;
 
     try {
       const res = await fetch(url);
+      const resScanned = await fetch(urlScanned);
       const data = await res.json();
+      const dataScanned = await resScanned.json();
 
       tbodyLeft.innerHTML = "";
       tbodyRight.innerHTML = "";
 
+      console.log(dataScanned.data.length);
       if (!Array.isArray(data.data) || data.data.length === 0) {
         tbodyLeft.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data</td></tr>`;
-        tbodyRight.innerHTML = `<tr><td colspan="6" class="text-center">Tidak ada data</td></tr>`;
+        return;
+      }
+      if (!Array.isArray(dataScanned.data) || dataScanned.data.length === 0) {
+        tbodyLeft.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data</td></tr>`;
         return;
       }
 
       const item = data.data[0];
-      
       const now = new Date();
       const formattedDate = now.toLocaleDateString("id-ID", {
         day: "2-digit",
@@ -46,7 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       headDate.textContent = formattedDate;
       count.textContent = data.count || "-";
 
-      headWarehouse.textContent = item.transfer_id || "-";
       headWarehouseName.textContent =
         "Form : " + item.from_warehouse_name || "-";
       headVendor.textContent = "To : " + item.to_warehouse_name || "-";
@@ -67,8 +75,20 @@ document.addEventListener("DOMContentLoaded", async () => {
               <td>${escapeHtml(status)}</td>
             `;
           tbodyLeft.appendChild(trLeft);
-        } else if (status === "scaned") {
+        }
+      });
+      
+      dataScanned.data.forEach((item, idx) => {
+        const barcode = item.barcode || "-";
+        transferId = item.transfer_id || "-";
+        const name = item.name || item.product_name || "-";
+        const codeProduct = item.name || item.code_product || "-";
+        const fromWarehouseName = item.from_warehouse_name || "-";
+        const toWarehouseName = item.to_warehouse_name || "-";
+        const status = item.status_product || "-";
+        if (status === "scanned") {
           const trRight = document.createElement("tr");
+          barcodeList.push(barcode);
           trRight.innerHTML = `
               <td>${idx + 1}</td>
               <td>${escapeHtml(barcode)}</td>
@@ -112,10 +132,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function tambahBarangScan() {
     const barcode = barcodeInput.value.trim();
     if (!barcode) return;
+    const paramsObj = { barcode: barcode, transfer_id: internalId };
+    const params = new URLSearchParams(paramsObj);
 
-    const apiUrl = `${base_url}/api/internal-transfer/create?barcode=${encodeURIComponent(
-      barcode
-    )}`;
+    const apiUrl = `${base_url}/api/internal-transfer/create?${params.toString()}`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -145,7 +165,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       await renderTable();
-
     } catch (err) {
       console.error("❌ Terjadi kesalahan saat update barcode:", err);
       const errorToastEl = document.getElementById("errorToast");
@@ -161,20 +180,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-
   // =========================================== VALIDATE ===============================
   document.getElementById("btn-validate").addEventListener("click", validate);
 
   async function validate() {
-    const apiUrl = `${base_url}/api/barcode/update_stock`;
-    const receiptId = headWarehouse.textContent.trim();
-    if (!receiptId || receiptId === "-" || receiptId === "Memuat data...") {
-      alert("❌ Data warehouse belum tersedia!");
-      return;
-    }
+    const apiUrl = `${base_url}/api/internal-transfer/transfer-product`;
     const payload = {
-      receipt: receiptId,
+      transfer_id: internalId,
+      barcodes: barcodeList,
     };
+
     const response = await fetch(apiUrl, {
       method: "PATCH",
       headers: {
