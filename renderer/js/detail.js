@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const theadRight = document.querySelector("#thead-right");
   const tbodyLeft = document.getElementById("tbody-left");
   const tbodyRight = document.getElementById("tbody-right");
-  const history = document.getElementById("history");
-  const theadRightMoving = document.querySelector("#thead-right-moving");
-  const tbodyRightMoving = document.getElementById("tbody-right-moving");
+  const pickingCode = localStorage.getItem("picking-code");
+  // const history = document.getElementById("history");
+  // const theadRightMoving = document.querySelector("#thead-right-moving");
+  // const tbodyRightMoving = document.getElementById("tbody-right-moving");
   const headWarehouse = document.getElementById("head-warehouse");
   const headDate = document.getElementById("head-date");
   const headWarehouseName = document.getElementById("head-warehouse-name");
@@ -40,19 +41,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function renderTable() {
     let url = "";
-    const pickingCode = localStorage.getItem("picking-code");
-    if (pickingCode === "incoming") {
-      url = `${base_url}/api/receipt/product_detail?receipt_id=${receiptId}`;
-      history.classList.add("d-none");
-    } else if (pickingCode === "internal") {
-      url = `${base_url}/api/internal-transfer/detail?transfer_id=${receiptId}`;
-      history.classList.remove("d-none");
-      openLostBtn.classList.add("d-none");
-    } else if (pickingCode === "outgoing") {
-      history.classList.add("d-none");
-      openLostBtn.classList.add("d-none");
-      url = `${base_url}/api/delivery-orders/detail?orders_id=${receiptId} `;
-    }
+    // const pickingCode = localStorage.getItem("picking-code");
+    // if (pickingCode === "incoming") {
+    url = `${base_url}/api/receipt/product_detail?receipt_id=${receiptId}`;
+    //   history.classList.add("d-none");
+    // } else if (pickingCode === "internal") {
+    //   url = `${base_url}/api/internal-transfer/detail?transfer_id=${receiptId}`;
+    //   history.classList.remove("d-none");
+    //   openLostBtn.classList.add("d-none");
+    // } else if (pickingCode === "outgoing") {
+    //   history.classList.add("d-none");
+    //   openLostBtn.classList.add("d-none");
+    //   url = `${base_url}/api/delivery-orders/detail?orders_id=${receiptId} `;
+    // }
 
     try {
       const res = await fetch(url);
@@ -69,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const item = data.data[0];
-      const pickingCode = localStorage.getItem("picking-code");
+      
       const now = new Date();
       const formattedDate = now.toLocaleDateString("id-ID", {
         day: "2-digit",
@@ -79,8 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       headDate.textContent = formattedDate;
       count.textContent = data.count || "-";
 
-      if (pickingCode === "incoming") {
-        theadRight.innerHTML = `
+      theadRight.innerHTML = `
           <tr style="white-space: nowrap;">
             <th>No</th>
             <th>Barcode</th>
@@ -90,27 +90,27 @@ document.addEventListener("DOMContentLoaded", async () => {
             <th>Informasi</th>
           </tr>
         `;
-        headWarehouse.textContent = item.receipt_id || "-";
-        headWarehouseName.textContent = item.warehouse_name || "-";
-        headVendor.textContent = item.vendor_name || "-";
-        data.data.forEach((item, idx) => {
-          const barcode = item.barcode || "-";
-          const name = item.name || item.product_name || "-";
-          const status = item.status_product || "-";
-          const condition = item.condition || "-";
-          const info = item.info || "-";
-          if (status === "waitting") {
-            const trLeft = document.createElement("tr");
-            trLeft.innerHTML = `
+      headWarehouse.textContent = item.receipt_id || "-";
+      headWarehouseName.textContent = item.warehouse_name || "-";
+      headVendor.textContent = item.vendor_name || "-";
+      data.data.forEach((item, idx) => {
+        const barcode = item.barcode || "-";
+        const name = item.name || item.product_name || "-";
+        const status = item.status_product || "-";
+        const condition = item.condition || "-";
+        const info = item.info || "-";
+        if (status === "waitting") {
+          const trLeft = document.createElement("tr");
+          trLeft.innerHTML = `
             <td>${idx + 1}</td>
             <td>${escapeHtml(barcode)}</td>
             <td>${escapeHtml(name)}</td>
             <td>${escapeHtml(status)}</td>
           `;
-            tbodyLeft.appendChild(trLeft);
-          } else if (status === "available") {
-            const trRight = document.createElement("tr");
-            trRight.innerHTML = `
+          tbodyLeft.appendChild(trLeft);
+        } else if (status === "available") {
+          const trRight = document.createElement("tr");
+          trRight.innerHTML = `
             <td>${idx + 1}</td>
             <td>${escapeHtml(barcode)}</td>
             <td>${escapeHtml(name)}</td>
@@ -118,112 +118,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             <td>${escapeHtml(condition)}</td>
             <td>${escapeHtml(info)}</td>
           `;
-            tbodyRight.appendChild(trRight);
-          }
-        });
-      } else if (pickingCode === "internal") {
-        theadRight.innerHTML = `
-          <tr style="white-space: nowrap;">
-            <th>No</th>
-            <th>Barcode</th>
-            <th>Nama</th>
-            <th>Code Produk</th>
-            <th>Status</th>
-            <th>Dari Gudang</th>
-            <th>Ke Gudang</th>
-          </tr>
-        `;
-        theadRightMoving.innerHTML = theadRight.innerHTML;
-
-        headWarehouse.textContent = item.transfer_id || "-";
-        headWarehouseName.textContent = "Form : " +
-          item.from_warehouse_name || "-";
-        headVendor.textContent = "To : " + item.to_warehouse_name || "-";
-        data.data.forEach((item, idx) => {
-          const barcode = item.barcode || "-";
-          const name = item.name || item.product_name || "-";
-          const codeProduct = item.name || item.code_product || "-";
-          const fromWarehouseName = item.from_warehouse_name || "-";
-          const toWarehouseName = item.to_warehouse_name || "-";
-          const status = item.status_product || "-";
-          if (status === "available") {
-            const trLeft = document.createElement("tr");
-            trLeft.innerHTML = `
-              <td>${idx + 1}</td>
-              <td>${escapeHtml(barcode)}</td>
-              <td>${escapeHtml(name)}</td>
-              <td>${escapeHtml(status)}</td>
-            `;
-            tbodyLeft.appendChild(trLeft);
-          } else if (status === "scaned") {
-            const trRight = document.createElement("tr");
-            trRight.innerHTML = `
-              <td>${idx + 1}</td>
-              <td>${escapeHtml(barcode)}</td>
-              <td>${escapeHtml(name)}</td>
-              <td>${escapeHtml(codeProduct)}</td>
-              <td>${escapeHtml(status)}</td>
-              <td>${escapeHtml(fromWarehouseName)}</td>
-              <td>${escapeHtml(toWarehouseName)}</td>
-            `;
-            tbodyRight.appendChild(trRight);
-          } else if (status === "moving") {
-            const trRight = document.createElement("tr");
-            trRight.innerHTML = `
-              <td>${idx + 1}</td>
-              <td>${escapeHtml(barcode)}</td>
-              <td>${escapeHtml(name)}</td>
-              <td>${escapeHtml(codeProduct)}</td>
-              <td>${escapeHtml(status)}</td>
-              <td>${escapeHtml(fromWarehouseName)}</td>
-              <td>${escapeHtml(toWarehouseName)}</td>
-            `;
-            tbodyRightMoving.appendChild(trRight);
-          }
-        });
-      } else if (pickingCode === "outgoing") {
-        theadRight.innerHTML = `
-          <tr style="white-space: nowrap;">
-            <th>No</th>
-            <th>Barcode</th>
-            <th>Nama Item</th>
-            <th>Status</th>
-            <th>Kondisi</th>
-            <th>Informasi</th>
-          </tr>
-        `;
-        headWarehouse.textContent = item.transfer_id || "-";
-        headWarehouseName.textContent = item.from_warehouse_name || "-";
-        headVendor.textContent = item.to_warehouse_name || "-";
-        data.data.forEach((item, idx) => {
-          const barcode = item.barcode || "-";
-          const name = item.name || item.product_name || "-";
-          const status = item.status_product || "-";
-          const condition = item.condition || "-";
-          const info = item.info || "-";
-          if (status === "available") {
-            const trLeft = document.createElement("tr");
-            trLeft.innerHTML = `
-              <td>${idx + 1}</td>
-              <td>${escapeHtml(barcode)}</td>
-              <td>${escapeHtml(name)}</td>
-              <td>${escapeHtml(status)}</td>
-            `;
-            tbodyLeft.appendChild(trLeft);
-          } else if (status === "scaned") {
-            const trRight = document.createElement("tr");
-            trRight.innerHTML = `
-              <td>${idx + 1}</td>
-              <td>${escapeHtml(barcode)}</td>
-              <td>${escapeHtml(name)}</td>
-              <td>${escapeHtml(status)}</td>
-              <td>${escapeHtml(condition)}</td>
-              <td>${escapeHtml(info)}</td>
-            `;
-            tbodyRight.appendChild(trRight);
-          }
-        });
-      }
+          tbodyRight.appendChild(trRight);
+        }
+      });
     } catch (err) {
       console.error("Gagal memuat detail:", err);
       tbodyLeft.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Gagal memuat data</td></tr>`;
@@ -278,35 +175,51 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-validate").addEventListener("click", validate);
 
   async function validate() {
-    const apiUrl = `${base_url}/api/barcode/update_stock`;
-    const receiptId = headWarehouse.textContent.trim();
-    if (!receiptId || receiptId === "-" || receiptId === "Memuat data...") {
-      alert("❌ Data warehouse belum tersedia!");
-      return;
+    const btnId = "btn-validate";
+    setButtonLoading2(btnId, true);
+
+    try {
+      const apiUrl = `${base_url}/api/barcode/update_stock`;
+      const receiptId = headWarehouse.textContent.trim();
+      const payload = { receipt: receiptId };
+
+      const response = await fetch(apiUrl, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`HTTP ${response.status}: ${text}`);
+      }
+
+      const result = await response.json();
+
+      const successToastEl = document.getElementById("successToast");
+      if (successToastEl) {
+        const successToast = new bootstrap.Toast(successToastEl);
+        successToast.show();
+      }
+
+      setTimeout(() => {
+        window.location.href = "../gudang/warehouse.html";
+      }, 1500);
+    } catch (err) {
+      console.error("❌ Gagal validasi:", err);
+      const errorToastEl = document.getElementById("errorToast");
+      if (errorToastEl) {
+        const errorToast = new bootstrap.Toast(errorToastEl);
+        errorToast.show();
+      }
+    } finally {
+      setTimeout(() => {
+        setButtonLoading2(btnId, false);
+      }, 2000);
     }
-    const payload = {
-      receipt: receiptId,
-    };
-    console.log("pay = ", payload);
-
-    const response = await fetch(apiUrl, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`HTTP ${response.status}: ${text}`);
-    }
-
-    const result = await response.json();
-    console.log("✅ Validasi berhasil:", result);
-
-    await renderTable();
   }
+
+
 });
 
 /**

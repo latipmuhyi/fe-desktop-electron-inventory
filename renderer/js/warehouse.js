@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const warehouse = localStorage.getItem("warehouse-code");
+  const warehouse = localStorage.getItem("warehouse");
   const nameLocal = localStorage.getItem("name");
   const nameAccount = document.getElementById("name-account");
   const tbody = document.getElementById("warehouse-tbody");
@@ -9,15 +9,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   nameAccount.textContent = nameLocal || "-";
 
-  let url = "";
-  const pickingCode = localStorage.getItem("picking-code");
-  if (pickingCode === "incoming") {
-    url = `${base_url}/api/receipts?warehouse=${warehouse}`;
-  } else if (pickingCode === "internal") {
-    url = `${base_url}/api/internal-transfer?warehouse=${warehouse}`;
-  } else if (pickingCode === "outgoing") {
-    url = `${base_url}/api/delivery-orders?warehouse=${warehouse}`;
-  }
+  // let url = "";
+  // const pickingCode = localStorage.getItem("picking-code");
+  // if (pickingCode === "incoming") {
+  let url = `${base_url}/api/receipts?warehouse=${warehouse}`;
+  // } else if (pickingCode === "internal") {
+  //   url = `${base_url}/api/internal-transfer?warehouse=${warehouse}`;
+  // } else if (pickingCode === "outgoing") {
+  //   url = `${base_url}/api/delivery-orders?warehouse=${warehouse}`;
+  // }
   
   try {
     const res = await fetch(url);

@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   btnSave.addEventListener("click", async () => {
     const dataInput = colomInput.value.trim();
-    const opnameId = "";
     if (!dataInput) return;
 
     setButtonLoading("input-stok-opname", true);
@@ -55,13 +54,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const url = `${base_url}/api/opname/list?warehouse_code=${warehouse}`;
-  
+
   try {
     const res = await fetch(url);
     const data = await res.json();
     tbody.innerHTML = "";
-
-    console.log("res", data.data.items.length);
 
     if (!Array.isArray(data.data.items) || data.data.items.length === 0) {
       tbody.innerHTML = `<tr><td colspan="10" class="text-center">Tidak ada data</td></tr>`;
@@ -83,35 +80,49 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (id) tr.dataset.id = id;
 
       tr.innerHTML = `
-        <td>${idx + 1}</td>
+        <td class="text-center">${idx + 1}</td>
         <td>${escapeHtml(opnameNumber)}</td>
         <td>${escapeHtml(notes)}</td>
-        <td>${escapeHtml(opnameDate)}</td>
-        <td>${escapeHtml(totalScanned)}</td>
-        <td>${escapeHtml(totalMatched)}</td>
-        <td>${escapeHtml(totalUnmatched)}</td>
-        <td>${escapeHtml(status)}</td>
-        <td>
-          <button type="button" class="btn btn-warning"
-                  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-            <i class="fa-solid fa-barcode"></i>
-          </button>
-          <button type="button" class="btn btn-success"
-                  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-            <i class="fa-solid fa-eye"></i>
-          </button>
+        <td class="text-center">${escapeHtml(opnameDate)}</td>
+        <td class="text-center">${escapeHtml(totalScanned)}</td>
+        <td class="text-center">${escapeHtml(totalMatched)}</td>
+        <td class="text-center">${escapeHtml(totalUnmatched)}</td>
+        <td class="text-center">${escapeHtml(status)}</td>
+        <td class="text-center">
+          ${
+            status !== "done"
+              ? `<button type="button" class="btn btn-warning btn-scan"
+             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+             <i class="fa-solid fa-barcode"></i>
+           </button>`
+              : `<button type="button" class="btn btn-success btn-detail"
+             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+             <i class="fa-solid fa-eye"></i>
+           </button>`
+          }
         </td>
       `;
+
       tbody.appendChild(tr);
     });
 
-    tbody.querySelectorAll(".clickable-row").forEach((row) => {
-      row.addEventListener("click", () => {
-        const id = row.dataset.id;
-        window.location.href = `./detail_stok_opname.html?opname_id=${encodeURIComponent(
-          id
+    tbody.addEventListener("click", (e) => {
+      const target = e.target.closest("button");
+      if (!target) return;
+
+      const tr = target.closest("tr");
+      const opnameId = tr?.dataset.id;
+      if (!opnameId) return;
+
+      if (target.classList.contains("btn-scan")) {
+        window.location.href = `./stok_opname/input.html?opname_id=${encodeURIComponent(
+          opnameId
         )}`;
-      });
+      } else if (target.classList.contains("btn-detail")) {
+        window.location.href = `./detail_stok_opname.html?opname_id=${encodeURIComponent(
+          opnameId
+        )}`;
+      }
     });
   } catch (err) {
     console.error("Error fetching warehouse:", err);

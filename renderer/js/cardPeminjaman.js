@@ -23,8 +23,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     },
   ];
 
-  // try {
-
   container.innerHTML = "";
   cardData.forEach((item, idx) => {
     const card = document.createElement("div");
@@ -35,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="card-body">
           <h5 class="card-title">${item.warehouse_name}</h5>
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <button class="btn btn-ssi btn-receipt d-flex" data-type="${item.warehouse_code}" id="${item.picking_code}">
+            <button class="btn btn-ssi btn-receipt d-flex" data-type="${item.warehouse_code}" id="${item.picking_type}">
               <p class="card-text mb-1 ms-1">To Process</p>
             </button>
           </div>
@@ -47,19 +45,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.querySelectorAll(".btn-receipt").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      if (cardData.picking_code === "pinjam") {
+      const id = e.currentTarget.getAttribute("id");
+      if (id === "pinjam") {
         window.location.href = "./peminjaman/index.html";
       } else {
-        window.location.href = "./pengembalian/index.html";
+        const modal = new bootstrap.Modal(
+          document.getElementById("inputPengembalian")
+        );
+        modal.show();
+        // window.location.href = "./pengembalian/index.html";
       }
     });
   });
-  // } catch (err) {
-  //   console.error("Error fetching inventory:", err);
-  //   container.innerHTML = `
-  //     <div class="text-center text-danger mt-3">
-  //       Gagal memuat data
-  //     </div>
-  //   `;
-  // }
 });

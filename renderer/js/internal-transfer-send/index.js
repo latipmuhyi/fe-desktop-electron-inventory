@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const warehouse = localStorage.getItem("warehouse-code");
+  const warehouse = localStorage.getItem("warehouse");
   const nameLocal = localStorage.getItem("name");
   const nameAccount = document.getElementById("name-account");
   const tbody = document.getElementById("warehouse-tbody");

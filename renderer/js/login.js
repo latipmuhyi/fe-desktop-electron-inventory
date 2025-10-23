@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setButtonLoading("btnLogin", true);
     const warehouse = "WH";
-    const name = "Anton";
+    const name = "Faqih";
 
     setTimeout(() => {
       if (email === "ad@g" && password === "1234") {

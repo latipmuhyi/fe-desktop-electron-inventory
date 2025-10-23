@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const pickingCode = localStorage.getItem("picking-code");
   const tbodyLeft = document.getElementById("tbody-left");
   const tbodyRight = document.getElementById("tbody-right");
   const tbodyMoving = document.getElementById("tbody-moving");
@@ -12,7 +11,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
   const internalId = params.get("internal_id");
-  let transferId = "";
 
   if (!internalId) {
     console.error("Parameter internal_id tidak ditemukan!");
@@ -36,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const item = data.data[0];
-      
+      const pickingCode = localStorage.getItem("picking-code");
       const now = new Date();
       const formattedDate = now.toLocaleDateString("id-ID", {
         day: "2-digit",
@@ -52,7 +50,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       headVendor.textContent = "To : " + item.to_warehouse_name || "-";
       data.data.forEach((item, idx) => {
         const barcode = item.barcode || "-";
-        transferId = item.transfer_id || "-";
         const name = item.name || item.product_name || "-";
         const codeProduct = item.name || item.code_product || "-";
         const fromWarehouseName = item.from_warehouse_name || "-";
@@ -113,54 +110,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     const barcode = barcodeInput.value.trim();
     if (!barcode) return;
 
-    const apiUrl = `${base_url}/api/internal-transfer/create?barcode=${encodeURIComponent(
-      barcode
-    )}`;
+    const apiUrl = `${base_url}/api/barcode/update_status`;
+    const payload = {
+      barcodes: [barcode],
+    };
 
     try {
       const response = await fetch(apiUrl, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const text = await response.text();
-        throw new Error(
-          `Gagal update barcode (HTTP ${response.status}): ${text}`
-        );
+        throw new Error(`HTTP ${response.status}: ${text}`);
       }
 
-      let result = null;
-      try {
-        result = await response.json();
-      } catch {
-        console.warn("⚠️ Response bukan JSON valid.");
-      }
-      const successToastEl = document.getElementById("successToast");
-      if (successToastEl) {
-        const successToast = new bootstrap.Toast(successToastEl);
-        successToast.show();
-      }
+      const result = await response.json();
 
       await renderTable();
-
     } catch (err) {
-      console.error("❌ Terjadi kesalahan saat update barcode:", err);
-      const errorToastEl = document.getElementById("errorToast");
-      const errorMessage = document.getElementById("error-message");
-      if (errorToastEl) {
-        const errorToast = new bootstrap.Toast(errorToastEl);
-        errorMessage.textContent = "Data gagal scan " + err;
-        errorToast.show();
-      }
-    } finally {
-      barcodeInput.value = "";
-      barcodeInput.focus();
+      console.error("❌ Gagal update barcode:", err);
     }
-  }
 
+    barcodeInput.value = "";
+    barcodeInput.focus();
+  }
 
   // =========================================== VALIDATE ===============================
   document.getElementById("btn-validate").addEventListener("click", validate);
@@ -175,6 +153,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const payload = {
       receipt: receiptId,
     };
+    console.log("pay = ", payload);
+
     const response = await fetch(apiUrl, {
       method: "PATCH",
       headers: {

@@ -24,6 +24,22 @@ body {
   background: #bc8560ff;
 }
 
+.btn-outline-ssi{
+  border-color: #da9a6fff;
+  color; #da9a6fff;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.btn-outline-ssi:hover{
+  color; #da9a6fff;
+  background: #bc8560ff;
+}
+
+.border-ssi{
+  border-radius: 6px;
+}
+
 #card-container {
   justify-content: flex-start;
 }
@@ -103,3 +119,74 @@ thead th {
 .nav-tabs {
   border-bottom: 1px solid var(--custom-tab-color);
 }
+
+/* --- DROPDOWN SELECT --- */
+#state {
+  background-color: #bc8560ff !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px;
+  padding: 6px 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 30px;
+}
+
+#state:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.25rem rgba(188, 133, 96, 0.4);
+}
+
+#state option {
+  background-color: #fff;
+  color: #000;
+}
+
+#state option:checked {
+  background-color: #bc8560ff !important;
+  color: #fff !important;
+}
+
+.form-select-sm option:hover{
+  background-color: #bc8560ff !important;
+  color: #fff !important;
+}
+
+.pagination .page-item .page-link {
+  color: #bc8560ff;
+  border: 1px solid #bc8560ff;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #bc8560ff;
+  color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #bc8560ff !important;
+  border-color: #bc8560ff !important;
+  color: #fff !important;
+}
+
+/* Buat tombol prev/next juga sama */
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+  border-radius: 6px;
+}
+
+#content-data-detail {
+  font-size: 13px;
+  line-height: 1.4;
+}
+#content-data-detail .fw-semibold {
+  font-size: 13px;
+}
+
+

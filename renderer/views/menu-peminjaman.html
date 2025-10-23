@@ -24,6 +24,122 @@
                 <!-- isi -->
               </div>
             </div>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">History</h5>
+            </div>
+            <div class="d-flex justify-content-between mb-2 align-items-center">
+              <div id="data-info" class="text-secondary small "></div>
+              <div class="d-flex align-items-center">
+                <div>
+                  <select id="state" class="form-select form-select-sm me-2" style="width: 200px;">
+                    <option value="">Semua Status</option>
+                    <option value="draft">Draft</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="borrowed">Borrowed</option>
+                    <option value="returned">Returned</option>
+                    <option value="overdue">Overdue</option>
+                    <option value="cancel">Cancel</option>
+                  </select>
+                </div>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination mb-0" id="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous" id="prev-page">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next" id="next-page">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-sm table-hover table-pos mt-0 mb-0">
+                <thead class="table-light" style="position: sticky; top: 0; background: white; z-index: 1;">
+                  <tr style="white-space: nowrap;">
+                    <th scope="col">No</th>
+                    <th scope="col">Borrowing Number</th>
+                    <th scope="col">Borrowing Barcode</th>
+                    <th scope="col">Borrower Name</th>
+                    <th scope="col">Borrower Phone</th>
+                    <th scope="col">Warehouse</th>
+                    <th scope="col">Borrow Date</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Total Items</th>
+                    <th scope="col">Total Returned</th>
+                    <th scope="col">Total Pending</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Overdue</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-peminjaman">
+                  <tr>
+                    <td colspan="13" class="text-center">Memuat data...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="inputPengembalian" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="inputPengembalianLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="inputPengembalianLabel">Silahkan Pilih data barang yang akan di kembalikan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-sm table-hover table-pos mt-0 mb-0">
+                  <thead class="table-light" style="position: sticky; top: 0; background: white; z-index: 1;">
+                    <tr style="white-space: nowrap;">
+                      <th scope="col">No</th>
+                      <th scope="col">Borrowing Number</th>
+                      <th scope="col">Borrowing Barcode</th>
+                      <th scope="col">Borrower Name</th>
+                      <th scope="col">Borrower Phone</th>
+                      <th scope="col">Warehouse</th>
+                      <th scope="col">Borrow Date</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Total Items</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-pengembalian">
+                    <tr>
+                      <td colspan="13" class="text-center">Memuat data...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-ssi">Understood</button>
+            </div>
+            </div>
+        </div>
+      </div>
+      
+      <!-- ✅ Toast Sukses -->
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body" id="success-message"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+
+        <!-- ❌ Toast Error -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body" id="error-message"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
         </div>
       </div>
@@ -33,6 +149,8 @@
     <script src="../js/index.js"></script>
     <script src="../js/cardPeminjaman.js"></script>
     <script src="../js/route.js"></script>
+    <script src="../js/menu-peminjaman.js"></script>
+    <script src="../js/pengembalian/modalPengembalian.js"></script>
     <script src="../../services/env.js"></script>
   </body>
 </html>

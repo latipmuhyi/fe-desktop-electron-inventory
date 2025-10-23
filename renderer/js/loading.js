@@ -23,7 +23,7 @@ function setButtonLoading(btnId, isLoading, defaultText = "Masuk") {
   }
 }
 
-function setButtonLoading2(btnId, isLoading, defaultText = "Masuk") {
+function setButtonLoading2(btnId, isLoading) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
 

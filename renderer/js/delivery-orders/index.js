@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   nameAccount.textContent = nameLocal || "-";
 
-  let url = `${base_url}/api/internal-transfer?warehouse=${warehouse}`;
+  let url = `${base_url}/api/delivery-orders?warehouse=${warehouse}`;
 
   try {
     const res = await fetch(url);

@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else if (type === "internal-receive") {
           window.location.href = "./internal-transfer-receive/warehouse.html";
         } else {
-          window.location.href = "./delivery-order/warehouse.html";
+          window.location.href = "./delivery-orders/warehouse.html";
         }
       });
     });

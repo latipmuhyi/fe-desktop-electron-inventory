@@ -38,6 +38,14 @@ body {
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       }
 
+      .panel-kiri {
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        height: 100%;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      }
+
       .panel-kanan button {
         width: 100%;
         margin-bottom: 8px;
