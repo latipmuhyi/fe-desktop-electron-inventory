@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "../internal-transfer-send/warehouse.html";
     });
   }
+  const toWarehouseOrders = document.getElementById("to-warehouse-orders");
+  if (toWarehouseOrders) {
+    toWarehouseOrders.addEventListener("click", () => {
+      window.location.href = "../delivery-orders/warehouse.html";
+    });
+  }
   const toMenuPeminjaman = document.getElementById("to-menu-peminjaman");
   if (toMenuPeminjaman) {
     toMenuPeminjaman.addEventListener("click", () => {

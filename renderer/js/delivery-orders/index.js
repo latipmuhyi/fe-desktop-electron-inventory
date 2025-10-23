@@ -22,14 +22,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     data?.data.forEach((item, idx) => {
-      const reference = item.reference || item.name || "-";
-      const locationFrom = item.location_from || item.locationFrom || "-";
-      const locationTo = item.location_to || item.locationTo || "-";
+      const reference = item.reference  || "-";
+      const locationFrom = item.location_from || "-";
+      const locationTo = item.location_to  || "-";
       const partner = item.partner || "-";
       const warehouse = item.warehouse || "-";
-      const sourceDocument = item.source_document || item.sourceDocument || "-";
+      const sourceDocument = item.source_document  || "-";
       const company = item.company || "-";
-      const scheduledDate = item.scheduled_date || item.scheduledDate || "-";
+      const scheduledDate = item.scheduled_date  || "-";
       const status = item.status || "-";
       const id = item.id || item._id || "";
 
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     tbody.querySelectorAll(".clickable-row").forEach((row) => {
       row.addEventListener("click", () => {
         const reference = row.dataset.reference;
-        window.location.href = `./detail.html?internal_id=${encodeURIComponent(
+        window.location.href = `./detail.html?delivery_id=${encodeURIComponent(
           reference
         )}`;
       });
