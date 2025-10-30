@@ -60,4 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "../stok_opname.html";
     });
   }
+  const toRetur = document.getElementById("to-retur");
+  if (toRetur) {
+    toRetur.addEventListener("click", () => {
+      window.location.href = "../retur_penjualan.html";
+    });
+  }
 });

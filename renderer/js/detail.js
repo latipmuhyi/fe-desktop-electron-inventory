@@ -44,17 +44,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // const pickingCode = localStorage.getItem("picking-code");
     // if (pickingCode === "incoming") {
     url = `${base_url}/api/receipt/product_detail?receipt_id=${receiptId}`;
-    //   history.classList.add("d-none");
-    // } else if (pickingCode === "internal") {
-    //   url = `${base_url}/api/internal-transfer/detail?transfer_id=${receiptId}`;
-    //   history.classList.remove("d-none");
-    //   openLostBtn.classList.add("d-none");
-    // } else if (pickingCode === "outgoing") {
-    //   history.classList.add("d-none");
-    //   openLostBtn.classList.add("d-none");
-    //   url = `${base_url}/api/delivery-orders/detail?orders_id=${receiptId} `;
-    // }
-
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -99,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const status = item.status_product || "-";
         const condition = item.condition || "-";
         const info = item.info || "-";
-        if (status === "waitting") {
+        if (status === "waiting") {
           const trLeft = document.createElement("tr");
           trLeft.innerHTML = `
             <td>${idx + 1}</td>
@@ -134,7 +123,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("addScanBtn")
     .addEventListener("click", tambahBarangScan);
   barcodeInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") tambahBarangScan();
+    if (e.key === "Enter") {
+      e.preventDefault();  
+      tambahBarangScan();
+    };
   });
 
   async function tambahBarangScan() {

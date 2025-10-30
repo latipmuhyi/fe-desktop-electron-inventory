@@ -68,7 +68,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // --- Tambah Barang ---
+
   btnAddItem.addEventListener("click", () => {
+    tambahBarangScan;
+  });
+  barcodeInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      tambahBarangScan();
+    }
+  });
+  async function tambahBarangScan() {
     const barcode = inputBarcode.value.trim();
     const condition = inputCondition.value.trim();
     const notes = inputNotes.value.trim();
@@ -93,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     inputNotes.value = "";
 
     showToast("success", "Barang berhasil ditambahkan ke daftar!");
-  });
+  };
 
   // --- Render Tabel ---
   function renderTable() {

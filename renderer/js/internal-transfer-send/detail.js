@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const internalId = params.get("internal_id");
   headWarehouse.textContent = internalId || "-";
 
-  let transferId = "";
+  // let transferId = "";
   let barcodeList = [];
 
   if (!internalId) {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
       if (!Array.isArray(dataScanned.data) || dataScanned.data.length === 0) {
-        tbodyLeft.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data</td></tr>`;
+        tbodyRight.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data</td></tr>`;
         return;
       }
 
@@ -62,9 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const barcode = item.barcode || "-";
         transferId = item.transfer_id || "-";
         const name = item.name || item.product_name || "-";
-        const codeProduct = item.name || item.code_product || "-";
-        const fromWarehouseName = item.from_warehouse_name || "-";
-        const toWarehouseName = item.to_warehouse_name || "-";
         const status = item.status_product || "-";
         if (status === "available") {
           const trLeft = document.createElement("tr");
@@ -126,7 +123,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("addScanBtn")
     .addEventListener("click", tambahBarangScan);
   barcodeInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") tambahBarangScan();
+    if (e.key === "Enter") {
+      e.preventDefault();
+      tambahBarangScan();
+    };
   });
 
   async function tambahBarangScan() {

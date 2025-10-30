@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnSaveNotes = document.getElementById("btnSaveNotes");
   const notesModal = new bootstrap.Modal(document.getElementById("notesModal"));
   const inputNotes = document.getElementById("returnNotes");
+  const barcodeInput = document.getElementById("scanBarcode");
 
   const params = new URLSearchParams(window.location.search);
   const borrowingId = Number(params.get("borrowing_id"));
@@ -155,6 +156,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // === Tambah (Scan)
   btnAddItem.addEventListener("click", () => {
+    tambahBarangScan;
+  });
+  barcodeInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      tambahBarangScan();
+    }
+  });
+
+  async function tambahBarangScan() {
     const barcode = scanInput.value.trim();
     if (!barcode) {
       showToast("error", "Barcode tidak boleh kosong!");
@@ -193,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderScannedTable();
     scanInput.value = "";
     showToast("success", "Barang berhasil ditambahkan ke daftar!");
-  });
+  }
 
   // === Tombol Validate
   btnValidate.addEventListener("click", () => {

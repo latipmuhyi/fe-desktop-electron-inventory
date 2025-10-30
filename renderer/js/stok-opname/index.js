@@ -111,6 +111,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ========================================= scan / add
 
   addScanBtn.addEventListener("click", tambahBarangScan);
+  barcodeInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      tambahBarangScan();
+    }
+  });
 
   async function tambahBarangScan() {
     const barcode = barcodeInput.value.trim();

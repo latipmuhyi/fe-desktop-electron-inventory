@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const warehouse = localStorage.getItem("warehouse");
   const tbodyLeft = document.getElementById("tbody-left");
   const tbodyRight = document.getElementById("tbody-right");
   const tbodyMoving = document.getElementById("tbody-moving");
@@ -11,30 +12,38 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
   const internalId = params.get("internal_id");
+  let barcodeList = [];
 
   if (!internalId) {
     console.error("Parameter internal_id tidak ditemukan!");
     return;
   }
 
+
   async function renderTable() {
-    let url = `${base_url}/api/internal-transfer/detail?transfer_id=${internalId}`;
+    let url = `${base_url}/api/stock-product-available?warehouse=${warehouse}`;
+    let urlScanned = `${base_url}/api/internal-transfer-receive/detail?transfer_id=${internalId}`;
 
     try {
       const res = await fetch(url);
+      const resScanned = await fetch(urlScanned);
       const data = await res.json();
+      const dataScanned = await resScanned.json();
 
       tbodyLeft.innerHTML = "";
       tbodyRight.innerHTML = "";
 
       if (!Array.isArray(data.data) || data.data.length === 0) {
         tbodyLeft.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data</td></tr>`;
-        tbodyRight.innerHTML = `<tr><td colspan="6" class="text-center">Tidak ada data</td></tr>`;
+        return;
+      }
+
+      if (!Array.isArray(dataScanned.data) || dataScanned.data.length === 0) {
+        tbodyRight.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data</td></tr>`;
         return;
       }
 
       const item = data.data[0];
-      const pickingCode = localStorage.getItem("picking-code");
       const now = new Date();
       const formattedDate = now.toLocaleDateString("id-ID", {
         day: "2-digit",
@@ -64,8 +73,19 @@ document.addEventListener("DOMContentLoaded", async () => {
               <td>${escapeHtml(status)}</td>
             `;
           tbodyLeft.appendChild(trLeft);
-        } else if (status === "scaned") {
+        } 
+      });
+      dataScanned.data.forEach((item, idx) => {
+        const barcode = item.barcode || "-";
+        transferId = item.transfer_id || "-";
+        const name = item.name || item.product_name || "-";
+        const codeProduct = item.name || item.code_product || "-";
+        const fromWarehouseName = item.from_warehouse_name || "-";
+        const toWarehouseName = item.to_warehouse_name || "-";
+        const status = item.status_product || "-";
+        if (status === "scanned") {
           const trRight = document.createElement("tr");
+          barcodeList.push(barcode);
           trRight.innerHTML = `
               <td>${idx + 1}</td>
               <td>${escapeHtml(barcode)}</td>
@@ -103,37 +123,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("addScanBtn")
     .addEventListener("click", tambahBarangScan);
   barcodeInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") tambahBarangScan();
+    if (e.key === "Enter") {
+      e.preventDefault();
+      tambahBarangScan();
+    };
   });
 
   async function tambahBarangScan() {
     const barcode = barcodeInput.value.trim();
+    const paramsObj = { barcode: barcode, transfer_id: internalId };
+    const params = new URLSearchParams(paramsObj);
     if (!barcode) return;
 
-    const apiUrl = `${base_url}/api/barcode/update_status`;
-    const payload = {
-      barcodes: [barcode],
-    };
+    const apiUrl = `${base_url}/api/internal-transfer-receive/create?${params.toString()}`;
 
     try {
       const response = await fetch(apiUrl, {
-        method: "PATCH",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`HTTP ${response.status}: ${text}`);
+      let result = null;
+      try {
+        result = await response.json();
+      } catch {
+        console.warn("⚠️ Response bukan JSON valid.");
       }
-
-      const result = await response.json();
+      const successToastEl = document.getElementById("successToast");
+      if (successToastEl) {
+        const successToast = new bootstrap.Toast(successToastEl);
+        successToast.show();
+      }
 
       await renderTable();
     } catch (err) {
-      console.error("❌ Gagal update barcode:", err);
+      console.error("❌ Terjadi kesalahan saat update barcode:", err);
+      const errorToastEl = document.getElementById("errorToast");
+      const errorMessage = document.getElementById("error-message");
+      if (errorToastEl) {
+        const errorToast = new bootstrap.Toast(errorToastEl);
+        errorMessage.textContent = "Data gagal scan " + err;
+        errorToast.show();
+      }
+    } finally {
+      barcodeInput.value = "";
+      barcodeInput.focus();
     }
 
     barcodeInput.value = "";
@@ -144,16 +180,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-validate").addEventListener("click", validate);
 
   async function validate() {
-    const apiUrl = `${base_url}/api/barcode/update_stock`;
-    const receiptId = headWarehouse.textContent.trim();
-    if (!receiptId || receiptId === "-" || receiptId === "Memuat data...") {
-      alert("❌ Data warehouse belum tersedia!");
-      return;
-    }
+    const apiUrl = `${base_url}/api/internal-transfer/transfer-product-receive`;
     const payload = {
-      receipt: receiptId,
+      transfer_id: internalId,
+      barcodes: barcodeList,
     };
-    console.log("pay = ", payload);
 
     const response = await fetch(apiUrl, {
       method: "PATCH",

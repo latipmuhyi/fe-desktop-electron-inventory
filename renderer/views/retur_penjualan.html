@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Retur Penjualan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div id="sidebar-container" class="col-md-3 col-lg-2 px-0"></div>
+        <div class="col-md-9 col-lg-10 px-0">
+          <div class="main-content p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h2 class="mb-0">Retur Penjualan</h2>
+            </div>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-sm table-hover table-pos mt-0 mb-0">
+                <thead class="table-light" style="position: sticky; top: 0; background: white; z-index: 1;">
+                  <tr style="white-space: nowrap;">
+                    <th scope="col">No</th>
+                    <th scope="col">Return Number</th>
+                    <th scope="col">Delivery Order</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Responsible</th>
+                    <th scope="col">Return Date</th>
+                    <th scope="col">Return To Warehouse</th>
+                    <th scope="col">Returned Count</th>
+                    <th scope="col">Total Items</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  <tr>
+                    <td colspan="13" class="text-center">Memuat data...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Toast Sukses -->
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body" id="success-message"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+
+        <!-- ❌ Toast Error -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body" id="error-message"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/index.js"></script>
+    <script src="../js/route.js"></script>
+    <script src="../js/retur/index.js"></script>
+    <script src="../../services/env.js"></script>
+  </body>
+</html>
